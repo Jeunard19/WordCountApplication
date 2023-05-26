@@ -1,6 +1,7 @@
+package com.project.wordcountapplication;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.Test;
@@ -13,26 +14,23 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest
-public class WordFrequencyAnalyzerImplIT {
+public class WordFrequencyAnalyzerImplTest {
 
     final static String BASE_URL = "http://localhost:8080/WordCountApplication-1.0-SNAPSHOT/api/wordfrequency";
+    //Deals with special characters and spaces
+    final static String TEXT = URLEncoder.encode("Hello Hello-hello''my(name name'nAme-nAme-nAme-is,IS is John",
+            StandardCharsets.UTF_8);
 
     @Test
     void testCalculateHighestFrequency(WireMockRuntimeInfo wmRuntimeInfo) throws IOException, InterruptedException {
-        String paramValue = "Hello Hello hello my name name nAme nAme nAme is IS is John";
-        String encodedParam = URLEncoder.encode(paramValue, StandardCharsets.UTF_8);
 
         String responseBody = "5";
 
         String apiUrl = String.format("%s/highest-frequency",BASE_URL);
-        String urlWithParams = String.format("%s?text=%s", apiUrl, encodedParam);
-
-        //Define stub
-        stubFor(get(apiUrl).withQueryParam("text", equalTo(paramValue)).willReturn(WireMock.ok(responseBody)));
+        String urlWithParams = String.format("%s?text=%s", apiUrl, TEXT);
 
         // Make a request to the WireMock server
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -48,18 +46,11 @@ public class WordFrequencyAnalyzerImplIT {
 
     @Test
     void testCalculateFrequencyForWord(WireMockRuntimeInfo wmRuntimeInfo) throws IOException, InterruptedException {
-        String paramValue = "Hello Hello hello my name name nAme nAme nAme is IS is John";
-        String paramValue2 = "is";
-
-        String encodedParam = URLEncoder.encode(paramValue, StandardCharsets.UTF_8);
-        String encodedParam2 = URLEncoder.encode(paramValue2, StandardCharsets.UTF_8);
+        String word = "is";
 
         String responseBody = "3";
         String apiUrl = String.format("%s/frequency-word",BASE_URL);
-        String urlWithParams = String.format("%s?text=%s&word=%s", apiUrl, encodedParam,encodedParam2);
-
-        //Define stub
-        stubFor(get(apiUrl).withQueryParam("text", equalTo(paramValue)).willReturn(WireMock.ok(responseBody)));
+        String urlWithParams = String.format("%s?text=%s&word=%s", apiUrl, TEXT,word);
 
         // Make a request to the WireMock server
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -70,21 +61,14 @@ public class WordFrequencyAnalyzerImplIT {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(responseBody, response.body());
-
     }
 
     @Test
     void testCalculateMostFrequentNWords(WireMockRuntimeInfo wmRuntimeInfo) throws IOException, InterruptedException {
-        String paramValue = "Hello Hello hello my name name nAme nAme nAme is IS is John";
-        String paramValue2 = "3";
-
-        String encodedParam = URLEncoder.encode(paramValue, StandardCharsets.UTF_8);
+        int nWords= 3;
 
         String apiUrl = String.format("%s/most-frequent-nwords",BASE_URL);
-        String urlWithParams = String.format("%s?text=%s&n=%s", apiUrl, encodedParam,paramValue2);
-
-        //Define stub
-       // stubFor(get(apiUrl).withQueryParam("text", equalTo(paramValue)).willReturn(WireMock.ok(responseBody)));
+        String urlWithParams = String.format("%s?text=%s&n=%s", apiUrl, TEXT,nWords);
 
         // Make a request to the WireMock server
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -107,6 +91,5 @@ public class WordFrequencyAnalyzerImplIT {
         assertEquals("is", jsonNode.get(2).get("word").asText());
 
     }
-
 
 }
