@@ -44,6 +44,59 @@ The methods of the WordFrequencyAnalyzer interface have been implemented as REST
 
 Here's an example of how to use the REST APIs:
 
+```http
+GET /api/wordfrequency/highest-frequency?text=The sun shines over over OveR a man the lake
+```
+Response:
+
+```json
+3
+```
+
+```http
+GET /api/wordfrequency/frequency-word?text=The sun shines over over OveR a man the lake&word=the
+```
+
+Response:
+
+```json
+2
+```
+
+```http
+GET /api/wordfrequency/most-frequent-nwords?text=The sun shines over over OveR a man the lake&n=5
+```
+
+Response:
+
+```json
+[
+    {
+        "frequency": 3,
+        "word": "over"
+    },
+    {
+        "frequency": 2,
+        "word": "the"
+    },
+    {
+        "frequency": 1,
+        "word": "a"
+    },
+    {
+        "frequency": 1,
+        "word": "lake"
+    },
+    {
+        "frequency": 1,
+        "word": "man"
+    }
+]
+```
+
+Make sure to replace {text}, {word}, and {n} with your desired values.
+
+
 
 
 
