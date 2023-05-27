@@ -72,7 +72,7 @@ public class WordFrequencyAnalyzerImpl implements WordFrequencyAnalyzer {
 
         if(n > mostFrequentWords.size()){
             //If n is larger thant the amount of words in the text, set n to the total number of words in the text
-            n = mostFrequentWords.size()-1;
+            n = mostFrequentWords.size();
         }
 
         //Get n words.
