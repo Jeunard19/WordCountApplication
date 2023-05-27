@@ -31,7 +31,7 @@ List<WordFrequency> calculateMostFrequentNWords(String text, int n);
 
 ### REST API Implementation
 
-The methods of the WordFrequencyAnalyzer interface have been implemented as REST APIs using Jakarta EE and a GlassFish server. The endpoints for these APIs are as follows:
+The methods of the WordFrequencyAnalyzer interface have been implemented as REST APIs using Jakarta EE 9 and a GlassFish 6.2.5 server. The endpoints for these APIs are as follows:
 - `GET /api/wordfrequency/highest-frequency?text={text}`: Calculates and returns the highest frequency of any word in the provided text.
 - `GET /api/wordfrequency/frequency-word?text={text}&word={word}`: Calculates and returns the frequency of a specific word in the given text.
 - `GET /api/wordfrequency/most-frequent-nwords?text={text}&n={n}`: Calculates and returns a list of n most frequent words as WordFrequency objects in the given text.
