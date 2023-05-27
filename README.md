@@ -39,7 +39,7 @@ The methods of the WordFrequencyAnalyzer interface have been implemented as REST
 ### Usage
 1. Clone the repository to your local machine.
 2. Import the project into your preferred Java development environment.
-3. Deploy the project on a GlassFish server.
+3. Deploy the project on a server.
 4. Access the APIs using the provided endpoints.
 
 Here's an example of how to use the REST APIs:
